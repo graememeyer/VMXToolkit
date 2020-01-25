@@ -1,5 +1,231 @@
 <#	
 	.SYNOPSIS
+		A brief description of the Get-VMX function.
+	
+	.DESCRIPTION
+		A detailed description of the Get-VMX function.
+	
+	.PARAMETER Name
+		Please specify an optional VM Name
+	
+	.PARAMETER Path
+		Please enter an optional root Path to your VMs (default is vmxdir)
+	
+	.EXAMPLE
+		PS C:\> Get-VMX -VMXName $value1 -Path $value2
+	
+	.NOTES
+		Additional information about the function.
+#>
+function Get-VMX {
+    [CmdletBinding(HelpUri = "http://labbuildr.bottnet.de/modules/Get-VMX/")]
+    param (
+        [Parameter(ParameterSetName = "1", Position = 1, HelpMessage = "Please specify an optional VM Name", Mandatory = $false)]
+        [Parameter(ParameterSetName = "2", Mandatory = $false)]$VMXName,
+        [Parameter(ParameterSetName = "1", HelpMessage = "Please enter an optional root Path to you VMs (default is vmxdir)", Mandatory = $false)]
+        $Path = $vmxdir,
+        [Parameter(ParameterSetName = "1", Mandatory = $false)]$UUID,
+        [Parameter(ParameterSetName = "2", Position = 2, HelpMessage = "Please specify a config to vmx", Mandatory = $true)][System.IO.FileInfo]$config
+
+    )
+    begin
+    {
+        if(!$vmrun)
+        {
+            Set-ExecutionPolicy Unrestricted -Scope Process
+            .\VMXToolkit\VMXToolkitinit.ps1
+        }
+    }
+    process {
+        $vmxrun = (Get-VMXRun).config
+        $Configfiles = @()
+        switch ($PsCmdlet.ParameterSetName) {
+            "1" { 
+                Write-Verbose "Getting vmxname from parameterset 1"
+                if ($VMXName) {
+                    $VMXName = $VMXName.TrimStart(".\")
+                    $VMXName = $VMXName.TrimEnd("\")
+                    $VMXName = $VMXName.TrimStart("./")
+                    $VMXName = $VMXName.TrimEnd("/")
+                    Write-Verbose $VMXName
+                } else { 
+                    $VMXName = "*"
+                }
+                Write-Verbose $MyInvocation.MyCommand
+                if (!(Test-path $Path)) {
+                    Write-Warning "VM Path $Path does currently not exist"
+                    # break
+                }
+                if (!($Configfiles = Get-ChildItem -Path $path -Recurse -File -Filter "$VMXName.vmx" -Exclude "*.vmxf" -ErrorAction SilentlyContinue )) {
+                    Write-Warning "$($MyInvocation.MyCommand) : VM $VMXName does currently not exist"
+                    # break
+                }
+
+            }
+				
+            "2" {
+                $VMXname = $config.Basename
+                #$VMXName = (Split-Path -Leaf $config) -replace ".vmx",""
+                if (!($Configfiles = Get-Item -Path $config -ErrorAction SilentlyContinue )) {
+                    Write-Warning "$($MyInvocation.MyCommand) : VM Config for $config does currently not exist"
+                    # break
+                }
+            }
+				
+        }
+        #$VMX = @()
+        foreach ($Config in $Configfiles) {
+            Write-Verbose "getting Configfile: $($config.FullName) from parameterset 2"
+            if ($Config.Extension -eq ".vmx") {
+                if ($UUID) {
+                    Write-Verbose $UUID
+                    $VMXUUID = Get-VMXUUID -config $Config.fullname
+                    If ($VMXUUID.uuid -eq $UUID) {
+                        $Object = New-Object -TypeName psobject
+                        $Object.pstypenames.insert(0, 'virtualmachine')
+                        $Object | Add-Member -MemberType NoteProperty -Name VMXName -Value ([string]($Config.BaseName))
+
+                        if ($vmxrun -contains $config.FullName) {
+                            $Object | Add-Member State ("running")
+                        } elseif (Get-ChildItem -Filter *.vmss -Path ($config.DirectoryName)) {
+                            $Object | Add-Member State ("suspended")
+                        } else {
+                            $Object | Add-Member State ("stopped")
+                        }
+                        $Object | Add-Member -MemberType NoteProperty -Name Template -Value (Get-VMXTemplate -config $Config).template
+                        $Object | Add-Member -MemberType NoteProperty -Name ActivationPreference -Value (Get-VMXActivationPreference -config $Config -VMXName $Config.BaseName).ActivationPreference
+                        $Object | Add-Member -MemberType NoteProperty -Name Scenario -Value (Get-VMXscenario -config $Config -VMXName $Config.BaseName) #.Scenario
+                        $Object | Add-Member -MemberType NoteProperty -Name UUID -Value (Get-VMXUUID -config $Config.FullName).uuid
+                        $Object | Add-Member -MemberType NoteProperty -Name Config -Value ([string]($Config.FullName))
+                        $Object | Add-Member -MemberType NoteProperty -Name Path -Value ([string]($Config.Directory))
+                        $Object | Add-Member -MemberType NoteProperty -Name VMXSnapConfig -Value ([string](Get-ChildItem -Path $Config.Directory -Filter "*.vmsd").Fullname)
+                        Write-Verbose "Config Fullname $($Config.Fullname)"
+                        Write-Output $Object
+                    }# end if
+				
+                }#end-if uuid
+                if (!($UUID)) {				
+                    $Object = New-Object -TypeName psobject
+                    $Object.pstypenames.insert(0, 'virtualmachine')
+                    $Object | Add-Member -MemberType NoteProperty -Name VMXName -Value ([string]($Config.BaseName))
+                    if ($vmxrun -contains $config.fullname) {
+                        $Object | Add-Member State ("running")
+                    } elseif (Get-ChildItem -Filter *.vmss -Path ($config.DirectoryName)) {
+                        $Object | Add-Member State ("suspended")
+                    } else {
+                        $Object | Add-Member State ("stopped")
+                    }
+                    $Object | Add-Member -MemberType NoteProperty -Name Template -Value (Get-VMXTemplate -Config $Config).template
+                    $Object | Add-Member -MemberType NoteProperty -Name ActivationPreference -Value (Get-VMXActivationPreference -config $Config -VMXName $Config.BaseName).ActivationPreference
+                    $Object | Add-Member -MemberType NoteProperty -Name Scenario -Value (Get-VMXscenario -config $Config -VMXName $Config.BaseName | Select-Object scenario, scenarioname)# .Scenario
+                    $Object | Add-Member -MemberType NoteProperty -Name UUID -Value (Get-VMXUUID -config $Config.FullName).uuid
+                    $Object | Add-Member -MemberType NoteProperty -Name Config -Value ([string]($Config.FullName))
+                    $Object | Add-Member -MemberType NoteProperty -Name Path -Value ([string]($Config.Directory))
+                    $Object | Add-Member -MemberType NoteProperty -Name VMXSnapConfig -Value ([string](Get-ChildItem -Path $Config.Directory -Filter "*.vmsd").Fullname)
+                    Write-Output $Object
+                }
+                #}#end template
+            }#end if
+            
+		     
+        }
+    }
+
+    end { }
+}
+
+
+<#	
+	.SYNOPSIS
+	    Get-VMXInfo
+	
+	.DESCRIPTION
+		Displays Information on Virtual machines
+        Memory Consumption
+        Memory: the Amount of Memory configured in .vmx for the Virtual Machine
+        PhysicalMemory(WorkingSet) :The amount of physical memory, in bytes, allocated for the associated process
+        VirtualMemory: The amount of virtual memory, in bytes, allocated for the associated process
+        Privatememory: The amount of memory, in bytes, allocated for the associated process that cannot be shared with other processes
+        NonpagedMemory: (perfmon: Nonpaged Bytes )The amount of system memory, in bytes, allocated for the associated process that cannot be written to the virtual memory paging file
+        Pagedmemory: The amount of memory, in bytes, allocated in the virtual memory paging file for the associated process
+        Privatememory: The amount of memory, in bytes, allocated for the associated process that cannot be shared with other processes
+        PagedsystemMemory: The amount of system memory, in bytes, allocated for the associated process that can be written to the virtual memory paging file
+
+	
+	.EXAMPLE
+		PS C:\> Get-VMXinfo
+    .EXAMPLE
+	.NOTES
+		requires VMXToolkit loaded
+#>
+function Get-VMXInfo {
+    [CmdletBinding(DefaultParametersetName = "2", HelpUri = "http://labbuildr.bottnet.de/modules/Get-VMXInfo/")]
+    param (
+		
+        [Parameter(ParameterSetName = "2", Mandatory = $true, ValueFromPipelineByPropertyName = $true)][Alias('NAME', 'CloneName')]$VMXName,
+        [Parameter(ParameterSetName = "2", Mandatory = $true, ValueFromPipelineByPropertyName = $true)][ValidateScript( { Test-Path -Path $_ })]$Path,
+        [Parameter(ParameterSetName = "2", Mandatory = $true, ValueFromPipelineByPropertyName = $True)]$config
+    )
+    Begin {
+
+    }
+    process {
+        switch ($PsCmdlet.ParameterSetName) {
+            "1"
+            { $vmxconfig = Get-VMXConfig -VMXName $VMXname -Path $Path }
+		
+            "2"
+            { $vmxconfig = Get-VMXConfig -config $config }
+        }
+        if ($vmxconfig) {
+            $ErrorActionPreference = "silentlyContinue"
+            Write-Verbose "processing $vmxname"
+            Write-Verbose $config
+            $Processes = ""
+            [bool]$ismyvmx = $false
+            [uint64]$SizeOnDiskinMB = ""
+            $Processes = get-process -id (Get-WmiObject -Class win32_process | Where-Object commandline -match $config.replace('\', '\\')).handle
+            foreach ($Process in $Processes) {
+                if ($Process.ProcessName -ne "VMware") {
+                    Write-Verbose "processing objects for $vmxname"
+                    $vmxconfig = Get-VMXConfig -config $config
+                    $Object = New-Object psobject
+                    $Object.pstypenames.insert(0, 'virtualmachineinfo')
+                    $Object | Add-Member VMXName ([string]$vmxname)
+                    $Object | Add-Member DisplayName (Get-VMXDisplayName -vmxconfig $vmxconfig).DisplayName
+                    $Object | Add-Member GuestOS (Get-VMXGuestOS -vmxconfig $vmxconfig).GuestOs
+                    $Object | Add-Member Processor (Get-VMXProcessor -vmxconfig $vmxconfig).Processor
+                    $Object | Add-Member Memory (Get-VMXmemory -vmxconfig $vmxconfig).Memory
+                    if ($Processes) {
+                        $Object | Add-Member ProcessName ([string]$Process.ProcessName)
+                        $Object | Add-Member VirtualMemory ([uint64]($Process.VirtualMemorySize64 / 1MB))
+                        $Object | Add-Member PhysicalMemory ([uint64]($Process.WorkingSet64 / 1MB))
+                        $Object | Add-Member PrivateMemory ([uint64]($Process.PrivateMemorySize64 / 1MB))
+                        $Object | Add-Member PagedMemory ([uint64]($Process.PagedMemorySize64 / 1MB))
+                        $Object | Add-Member PagedsystemMemory ([uint64]($Process.PagedSystemMemorySize64 / 1MB))
+                        $Object | Add-Member PeakPagedMemory ([uint64]($Process.PeakPagedMemorySize64 / 1MB))
+                        $Object | Add-Member PeakPhysicalMemory ([uint64]($Process.PeakWorkingSet64 / 1MB))
+                        $Object | Add-Member NonPagedMemory ([uint64]($Process.NonpagedSystemMemorySize64 / 1MB))
+                        $Object | Add-Member CPUtime ($Process.CPU)
+                    }
+                    $Object | Add-Member NetWork (Get-VMXNetwork -vmxconfig $vmxconfig | Select-Object Adapter, Network)
+                    $Object | Add-Member Adapter (Get-VMXNetworkAdapter -vmxconfig $vmxconfig | Select-Object Adapter, Type )
+                    $Object | Add-Member Connection (Get-VMXNetworkConnection -vmxconfig $vmxconfig | Select-Object Adapter, ConnectionType)
+					
+                    $Object | Add-Member Configfile $config
+                    $Object | Add-Member -MemberType NoteProperty -Name SCSIController -Value (Get-VMXScsiController -vmxconfig $vmxconfig | Select-Object SCSIController, Type)
+                    $Object | Add-Member -MemberType NoteProperty -Name ScsiDisk -Value (Get-VMXScsiDisk -vmxconfig $vmxconfig | Select-Object SCSIAddress, Disk)
+                    Write-Output $Object
+					
+                } #end if $Process.ProcessName -ne "VMware"
+            } #  end foreach process
+        }# end if $VMXconfig
+    } # endprocess
+    # 
+} # end Get-VMXinfo
+
+<#	
+	.SYNOPSIS
 	Get-VMwareversion
 	.DESCRIPTION
 		Displays version Information on installed VMware version
@@ -5577,4 +5803,4 @@ function Wait-VMXuserloggedIn {
     $Object | Add-Member -MemberType NoteProperty -Name User -Value $testuser
     $Object | Add-Member -MemberType NoteProperty -Name LoggedIn -Value $true
     Write-Output $Object
-}d
+}
