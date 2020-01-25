@@ -6441,4 +6441,4 @@ Write-Host	-ForegroundColor Green "[success]"
     $Object | Add-Member -MemberType NoteProperty -Name User -Value $testuser
     $Object | Add-Member -MemberType NoteProperty -Name LoggedIn -Value $true
 	Write-Output $Object
-}
+}d
