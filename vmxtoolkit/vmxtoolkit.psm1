@@ -699,8 +699,8 @@ function Get-VMXInfo {
 		if ($vmxconfig)
 		{
 		$ErrorActionPreference ="silentlyContinue"
-		write-verbose "processing $vmxname"
-        write-verbose $config
+		Write-Verbose "processing $vmxname"
+        Write-Verbose $config
         $Processes = ""
 		[bool]$ismyvmx = $false
 		[uint64]$SizeOnDiskinMB = ""
@@ -709,7 +709,7 @@ function Get-VMXInfo {
 			{
 				if ($Process.ProcessName -ne "VMware")
 				{
-					write-verbose "processing objects for $vmxname"
+					Write-Verbose "processing objects for $vmxname"
 					$vmxconfig = Get-VMXConfig -config $config
 					$Object = New-Object psobject
 					$Object.pstypenames.insert(0,'virtualmachineinfo')
@@ -2627,10 +2627,10 @@ function Get-VMXRun{
 	do
 	{
 		(($cmdresult = &$vmrun List) 2>&1 | Out-Null)
-		write-verbose "$origin $cmdresult"
+		Write-Verbose "$origin $cmdresult"
 	}
 	until ($VMrunErrorCondition -notcontains $cmdresult)
-	write-verbose "$origin $cmdresult"
+	Write-Verbose "$origin $cmdresult"
 	foreach ($runvm in $cmdresult)
 	{
 		if ($runvm -notmatch "Total running VMs")
@@ -3551,7 +3551,7 @@ function Suspend-VMX
 				do
 				{
 					$cmdresult = &$vmrun suspend $vmx.config # 2>&1 | Out-Null
-					write-verbose "$Origin suspend $VMXname $cmdresult"
+					Write-Verbose "$Origin suspend $VMXname $cmdresult"
 				}
 				until ($VMrunErrorCondition -notcontains $cmdresult)
 	    		$VMXSuspendtime = Get-Date -Format "MM.dd.yyyy hh:mm:ss"
@@ -3617,7 +3617,7 @@ function Set-VMXTemplate
 			
 
 
-            Write-verbose $config
+            Write-Verbose $config
 			$content = Get-Content -Path $config | Where-Object { $_ -ne "" }
 		    $content = $content | Where-Object{ $_ -NotMatch "templateVM" }
 		    $Object = New-Object psobject
@@ -3764,10 +3764,10 @@ function Set-VMXNetworkAdapter
             $PCISlot = ((1+$Adapter) * 64)
             }
 		$Content = Get-Content -Path $config
-		Write-verbose "ethernet$Adapter.present"
+		Write-Verbose "ethernet$Adapter.present"
 		if (!($Content -match "ethernet$Adapter.present")) { Write-Warning "Adapter not present, will be added" }
 		Write-Host -ForegroundColor Gray " ==>configuring Ethernet$Adapter as $AdapterType with $ConnectionType for " -NoNewline
-		write-host -ForegroundColor Magenta $VMXName -NoNewline
+		Write-Host -ForegroundColor Magenta $VMXName -NoNewline
 		Write-Host -ForegroundColor Green "[success]"
 		$Content = $Content -notmatch "ethernet$Adapter"
         $Addnic = @('ethernet'+$Adapter+'.present = "TRUE"')
@@ -3840,7 +3840,7 @@ function Connect-VMXNetworkAdapter
         if ((get-vmx -Path $config).state -eq "stopped")
         {
 		$Content = Get-Content -Path $config
-		Write-verbose "ethernet$Adapter.present"
+		Write-Verbose "ethernet$Adapter.present"
 		if (!($Content -match "ethernet$Adapter.present")) { Write-Warning "Adapter not present" }
         else
             {
@@ -3890,7 +3890,7 @@ function Connect-VMXcdromImage
         if ((get-vmx -Path $config).state -eq "stopped")
         {
 		$Content = Get-Content -Path $config
-		Write-verbose "Checking for $($Contoller)$($Port).present"
+		Write-Verbose "Checking for $($Contoller)$($Port).present"
 		if (!($Content -notmatch " $($Contoller)$($Port).present"))
              {
              Write-Warning "Controller $($Contoller)$($Port) not present"
@@ -3979,7 +3979,7 @@ function Disconnect-VMXNetworkAdapter
         if ((get-vmx -Path $config).state -eq "stopped")
         {
 		$Content = Get-Content -Path $config
-		Write-verbose "ethernet$Adapter.present"
+		Write-Verbose "ethernet$Adapter.present"
 		if (!($Content -match "ethernet$Adapter.present")) { Write-Warning "Adapter not present" }
         else
             {
@@ -4028,8 +4028,8 @@ function Set-VMXVnet
 		if ((get-vmx -Path $config).state -eq "stopped")
         {
         $Content = Get-Content -Path $config
-		Write-verbose "ethernet$Adapter.present"
-		if (!($Content -match "ethernet$Adapter.present")) { write-error "Adapter not present " }
+		Write-Verbose "ethernet$Adapter.present"
+		if (!($Content -match "ethernet$Adapter.present")) { Write-Error "Adapter not present " }
 		$Content = ($Content -notmatch "ethernet$Adapter.vnet")
 		$Content = ($Content -notmatch "ethernet$Adapter.connectionType")
 		Set-Content -Path $config -Value $Content
@@ -4252,13 +4252,13 @@ function Remove-vmx {
 	            do
 	                {
 		            $cmdresult = &$vmrun deleteVM "$config" # 2>&1 | Out-Null
-        		    write-verbose "$Origin deleteVM $vmname $cmdresult"
-                    write-verbose $LASTEXITCODE
+        		    Write-Verbose "$Origin deleteVM $vmname $cmdresult"
+                    Write-Verbose $LASTEXITCODE
 	                }
 	            until ($VMrunErrorCondition -notcontains $cmdresult -or !$cmdresult)
                 if ($cmdresult -match "Error: This VM is in use.")
                     {
-                    write-warning "$cmdresult Please close VMX $VMXName in VMware UI and try again"
+                    Write-Warning "$cmdresult Please close VMX $VMXName in VMware UI and try again"
                     }
         
                 if ($LASTEXITCODE -ne 0)
@@ -4320,7 +4320,7 @@ process {
     if ($PSCmdlet.MyInvocation.BoundParameters["debug"].IsPresent)
         {
         $returncommand = & $Global:VMware_vdiskmanager -c -s "$($NewDiskSize/1MB)MB" -t 0 -a lsilogic $Diskpath # 2>&1 
-        write-host -ForegroundColor Cyan "Debug message start"
+        Write-Host -ForegroundColor Cyan "Debug message start"
         Write-Host -ForegroundColor White "Command Returned: $returncommand"
         Write-Host -ForegroundColor White "Exitcode: $LASTEXITCODE"
         Write-Host -ForegroundColor White "Running $Global:VMwareversion"
@@ -4833,7 +4833,7 @@ if (!$noescape.IsPresent)
     { 
     $Scriptblock = $Scriptblock -replace '"','\"'
     }	
-Write-host -ForegroundColor Gray " ==>running $Scriptblock on: " -NoNewline
+Write-Host -ForegroundColor Gray " ==>running $Scriptblock on: " -NoNewline
 Write-Host -ForegroundColor Magenta $VMXName -NoNewline
 
 do
@@ -4928,7 +4928,7 @@ if ($Logfile)
     $Scriptblock = "$Scriptblock >> $logfile 2>&1"
     }
 	
-Write-host -ForegroundColor Gray " ==>running $Scriptblock on: " -NoNewline
+Write-Host -ForegroundColor Gray " ==>running $Scriptblock on: " -NoNewline
 Write-Host -ForegroundColor Magenta $VMXName -NoNewline
 do
 	{
@@ -5124,13 +5124,13 @@ function Get-VMXSnapshotconfig
         $Snaps += Search-VMXPattern -pattern "snapshot\d{1,2}.uid" -vmxconfig $Snapcfg -name SnapshotNumber -value UID -patterntype ".uid"
         $CurrentUID = Search-VMXPattern -pattern "snapshot.current" -vmxconfig $Snapcfg -name CurrentUID -value UID -patterntype ".uid"
         Write-Verbose "got $($Snaps.count) Snapshots"
-        write-verbose "Processing Snapshots"
+        Write-Verbose "Processing Snapshots"
         foreach ($snap in $Snaps)
             { 
             [bool]$isCurrent = $false
             Write-Verbose "Snapnumber: $($Snap.SnapshotNumber)"
             Write-Verbose "UID $($Snap.UID)"
-            Write-verbose "Current UID $($CurrentUID.UID)"
+            Write-Verbose "Current UID $($CurrentUID.UID)"
             If ($snap.uid -eq $CurrentUID.uid)
                 {
                 $isCurrent = $True
@@ -5570,7 +5570,7 @@ function Copy-VMXFile2Guest
 	do
 	    {
 		($cmdresult = &$vmrun -gu $Guestuser -gp $Guestpassword copyfilefromhosttoguest $config $Sourcefile "$targetfile")  2>&1 | Out-Null
-	    write-verbose "$cmdresult"
+	    Write-Verbose "$cmdresult"
 		}
 		until ($VMrunErrorCondition -notcontains $cmdresult)
         if ($LASTEXITCODE -eq 0)
@@ -5610,7 +5610,7 @@ function Copy-VMXFile2Host
 	do
 	    {
 		($cmdresult = &$vmrun -gu $Guestuser -gp $Guestpassword copyfilefromguesttohost $config $Sourcefile "$targetfile")  2>&1 | Out-Null
-	    write-verbose "$cmdresult"
+	    Write-Verbose "$cmdresult"
 		}
 		until ($VMrunErrorCondition -notcontains $cmdresult)
         if ($LASTEXITCODE -eq 0)
@@ -5660,7 +5660,7 @@ function Copy-VMXDirHost2Guest
         }
 	$NoQSourcepath =Split-Path $Sourcepath -NoQualifier
     $Sourcebranch = (Split-Path $NoQSourcepath) -replace ("\\","\\")
-    write-verbose "Source Branch Directory: $Sourcebranch"
+    Write-Verbose "Source Branch Directory: $Sourcebranch"
     $incr = 1
     If ($Linux.IsPresent)
                 {
@@ -5669,8 +5669,8 @@ function Copy-VMXDirHost2Guest
     $cmdresult = &$vmrun -gu $Guestuser -gp $Guestpassword directoryExistsInGuest $config $targetpath # 2>&1 | Out-Null
     if ($cmdresult -eq "The directory does not exist.")
         {
-        Write-warning "$cmdresult : $targetpath, creating it"
-        Write-verbose "we will create $targetpath"
+        Write-Warning "$cmdresult : $targetpath, creating it"
+        Write-Verbose "we will create $targetpath"
         $newpath = New-VMXGuestPath -config $config -targetpath $targetpath -Guestuser $Guestuser -Guestpassword $Guestpassword
         }
     foreach ($file in $files)
@@ -5683,7 +5683,7 @@ function Copy-VMXDirHost2Guest
                 {
                 $Targetfile = $Targetfile.Replace("\","/")
                 }			
-            write-verbose "Target File will be $Targetfile"
+            Write-Verbose "Target File will be $Targetfile"
 
             $TargetDir = Split-Path -LiteralPath $Targetfile 
             Write-Verbose "Sourcefile: $($file.fullname)"
@@ -5696,7 +5696,7 @@ function Copy-VMXDirHost2Guest
                         $targetdir =$targetdir.Replace("\","/")
                     }
 
-                    Write-verbose "we will create $TargetDir"
+                    Write-Verbose "we will create $TargetDir"
                     Write-Verbose $config
                     $newpath = New-VMXGuestPath -config $config -targetpath $TargetDir -Guestuser $Guestuser -Guestpassword $Guestpassword
 		        }
@@ -5804,7 +5804,7 @@ begin {
       }
 process {
         Write-Verbose $vmxname
-        write-verbose $config
+        Write-Verbose $config
         if (!($vmx = get-vmx -Path $config))
         {
             Write-Warning "Could not find vm with Name $VMXName and Config $config"
@@ -5981,7 +5981,7 @@ begin {
       }
 process {
         Write-Verbose $vmxname
-        write-verbose $config
+        Write-Verbose $config
         if (!($vmx = get-vmx -Path $config))
         {
             Write-Warning "Could not find vm with Name $VMXName and Config $config"

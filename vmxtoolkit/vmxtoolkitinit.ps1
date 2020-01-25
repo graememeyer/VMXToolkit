@@ -8,12 +8,12 @@ if ($PSVersionTable.PSVersion -lt [version]"6.0.0") {
     Write-Verbose "this will check if we are on 6"
 }
 
-write-Host "trying to get os type ... "
+Write-Host "trying to get os type ... "
 if ($env:windir) {
     $OS_Version = Get-Command "$env:windir\system32\ntdll.dll"
     $OS_Version = "Product Name: Windows $($OS_Version.Version)"
     $Global:VMXToolkit_type = "win_x86_64"
-    write-verbose "getting VMware Path from Registry"
+    Write-Verbose "getting VMware Path from Registry"
     if (!(Test-Path "HKCR:\")) { $NewPSDrive = New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT }
     if (!($VMware_Path = Get-ItemProperty HKCR:\Applications\VMware.exe\shell\open\command -ErrorAction SilentlyContinue)) {
         Write-Error "VMware Binaries not found from registry"
@@ -143,20 +143,20 @@ elseif ($OS = uname) {
             [version]$Global:VMwareversion = ($VMware_Base_Version.Split(' '))[0]
         }
         default {
-            Write-host "Sorry, rome was not build in one day"
+            Write-Host "Sorry, rome was not build in one day"
             exit
         }
 			
 			
 			
         'default' {
-            write-host "unknown linux OS"
+            Write-Host "unknown linux OS"
             break
         }
     }
 }
 else {
-    write-host "error detecting OS"
+    Write-Host "error detecting OS"
 }
 
 if (Test-Path $preferences_file) {
@@ -226,10 +226,10 @@ if (!$GLobal:VMware_packer) {
     Write-Warning "Please install 7za/p7zip, otherwise labbtools can not expand OS Masters"
 }
 if ($OS_Version) {
-    write-Host -ForegroundColor Gray " ==>$OS_Version"
+    Write-Host -ForegroundColor Gray " ==>$OS_Version"
 }
 else	{
-    write-host "error Detecting OS"
+    Write-Host "error Detecting OS"
     Break
 }
 Write-Host -ForegroundColor Gray " ==>running VMXToolkit for $Global:VMXToolkit_type"
