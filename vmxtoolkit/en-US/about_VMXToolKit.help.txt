@@ -1,98 +1,98 @@
-﻿vmxtoolkit
+﻿VMXToolkit
 ==========
 
-vmxtoolkit is the Powershell extension to VMware Workstation
-vmxtoolkit is community-driven
-vmxtoolkit is the Base for labbuildr, the automated lab building environment for vmware workstation on windows
-you get support for labbuildr on http://labbuildr.com and https://github.com/bottkars/vmxtoolkit
+VMXToolkit is the Powershell extension to VMware Workstation
+VMXToolkit is community-driven
+VMXToolkit is the Base for labbuildr, the automated lab building environment for VMware workstation on windows
+you get support for labbuildr on http://labbuildr.com and https://github.com/bottkars/VMXToolkit
 
 simply follow @azurestack_guy on twitter for updates
 Installation  
 ===========
  
 Simply extract the toolkit into a folder where your VMÂ´s reside.
-Per Default, vmxtoolkit searches from that path
+Per Default, VMXToolkit searches from that path
 Otherwise, specifythe path to your vm when doing a get-vmx
 
 current exposed commands
 ===========  
 ```Powershell
- PS E:\GitHub> Get-Command -Module vmxtoolkit
+ PS E:\GitHub> Get-Command -Module VMXToolkit
 
 CommandType     Name                                               ModuleName
 -----------     ----                                               ----------
-Function        Add-VMXScsiDisk                                    vmxtoolkit
-Function        Connect-VMXNetworkAdapter                          vmxtoolkit
-Function        convert-VMXdos2unix                                vmxtoolkit
-Function        Copy-VMXDirHost2Guest                              vmxtoolkit
-Function        copy-VMXfile2guest                                 vmxtoolkit
-Function        Disconnect-VMXNetworkAdapter                       vmxtoolkit
-Function        Get-VMwareVersion                                  vmxtoolkit
-Function        Get-VMX                                            vmxtoolkit
-Function        Get-VMXActivationPreference                        vmxtoolkit
-Function        Get-VMXAnnotation                                  vmxtoolkit
-Function        Get-VMXConfig                                      vmxtoolkit
-Function        Get-VMXConfigVersion                               vmxtoolkit
-Function        Get-VMXDisplayName                                 vmxtoolkit
-Function        Get-VMXGuestOS                                     vmxtoolkit
-Function        Get-VMXHWVersion                                   vmxtoolkit
-Function        Get-VMXIdeDisk                                     vmxtoolkit
-Function        Get-VMXInfo                                        vmxtoolkit
-Function        Get-VMXIPAddress                                   vmxtoolkit
-Function        Get-VMXmemory                                      vmxtoolkit
-Function        Get-VMXNetwork                                     vmxtoolkit
-Function        Get-VMXNetworkAdapter                              vmxtoolkit
-Function        Get-VMXNetworkAddress                              vmxtoolkit
-Function        Get-VMXNetworkConnection                           vmxtoolkit
-Function        Get-VMXProcessesInGuest                            vmxtoolkit
-Function        Get-VMXProcessor                                   vmxtoolkit
-Function        Get-VMXRun                                         vmxtoolkit
-Function        Get-VMXscenario                                    vmxtoolkit
-Function        Get-VMXScsiController                              vmxtoolkit
-Function        Get-VMXScsiDisk                                    vmxtoolkit
-Function        Get-VMXSnapshot                                    vmxtoolkit
-Function        Get-VMXSnapshotconfig                              vmxtoolkit
-Function        Get-VMXTemplate                                    vmxtoolkit
-Function        Get-VMXToolsState                                  vmxtoolkit
-Function        Get-VMXUUID                                        vmxtoolkit
-Function        Get-yesnoabort                                     vmxtoolkit
-Function        Invoke-VMXBash                                     vmxtoolkit
-Function        Invoke-VMXexpect                                   vmxtoolkit
-Function        Invoke-VMXPowerShell                               vmxtoolkit
-Function        New-VMXClone                                       vmxtoolkit
-Function        New-VMXGuestPath                                   vmxtoolkit
-Function        New-VMXLinkedClone                                 vmxtoolkit
-Function        New-VMXScsiDisk                                    vmxtoolkit
-Function        New-VMXSnapshot                                    vmxtoolkit
-Function        Optimize-VMXDisk                                   vmxtoolkit
-Function        remove-vmx                                         vmxtoolkit
-Function        Remove-VMXserial                                   vmxtoolkit
-Function        Remove-VMXSnapshot                                 vmxtoolkit
-Function        Repair-VMXDisk                                     vmxtoolkit
-Function        Resize-VMXDiskfile                                 vmxtoolkit
-Function        Restore-VMXSnapshot                                vmxtoolkit
-Function        Search-VMXPattern                                  vmxtoolkit
-Function        Set-VMXActivationPreference                        vmxtoolkit
-Function        Set-VMXAnnotation                                  vmxtoolkit
-Function        Set-VMXDisconnectIDE                               vmxtoolkit
-Function        Set-VMXDisplayName                                 vmxtoolkit
-Function        Set-VMXLinuxDNS                                    vmxtoolkit
-Function        Set-VMXLinuxNetwork                                vmxtoolkit
-Function        Set-VMXMainMemory                                  vmxtoolkit
-Function        Set-VMXmemory                                      vmxtoolkit
-Function        Set-VMXNetworkAdapter                              vmxtoolkit
-Function        Set-VMXprocessor                                   vmxtoolkit
-Function        Set-VMXscenario                                    vmxtoolkit
-Function        Set-VMXserialPipe                                  vmxtoolkit
-Function        Set-VMXSharedFolder                                vmxtoolkit
-Function        Set-VMXSharedFolderState                           vmxtoolkit
-Function        Set-VMXSize                                        vmxtoolkit
-Function        Set-VMXTemplate                                    vmxtoolkit
-Function        Set-VMXToolsReminder                               vmxtoolkit
-Function        Set-VMXVnet                                        vmxtoolkit
-Function        Start-VMX                                          vmxtoolkit
-Function        Stop-VMX                                           vmxtoolkit
-Function        Suspend-VMX                                        vmxtoolkit
+Function        Add-VMXScsiDisk                                    VMXToolkit
+Function        Connect-VMXNetworkAdapter                          VMXToolkit
+Function        convert-VMXdos2unix                                VMXToolkit
+Function        Copy-VMXDirHost2Guest                              VMXToolkit
+Function        copy-VMXfile2guest                                 VMXToolkit
+Function        Disconnect-VMXNetworkAdapter                       VMXToolkit
+Function        Get-VMwareVersion                                  VMXToolkit
+Function        Get-VMX                                            VMXToolkit
+Function        Get-VMXActivationPreference                        VMXToolkit
+Function        Get-VMXAnnotation                                  VMXToolkit
+Function        Get-VMXConfig                                      VMXToolkit
+Function        Get-VMXConfigVersion                               VMXToolkit
+Function        Get-VMXDisplayName                                 VMXToolkit
+Function        Get-VMXGuestOS                                     VMXToolkit
+Function        Get-VMXHWVersion                                   VMXToolkit
+Function        Get-VMXIdeDisk                                     VMXToolkit
+Function        Get-VMXInfo                                        VMXToolkit
+Function        Get-VMXIPAddress                                   VMXToolkit
+Function        Get-VMXmemory                                      VMXToolkit
+Function        Get-VMXNetwork                                     VMXToolkit
+Function        Get-VMXNetworkAdapter                              VMXToolkit
+Function        Get-VMXNetworkAddress                              VMXToolkit
+Function        Get-VMXNetworkConnection                           VMXToolkit
+Function        Get-VMXProcessesInGuest                            VMXToolkit
+Function        Get-VMXProcessor                                   VMXToolkit
+Function        Get-VMXRun                                         VMXToolkit
+Function        Get-VMXscenario                                    VMXToolkit
+Function        Get-VMXScsiController                              VMXToolkit
+Function        Get-VMXScsiDisk                                    VMXToolkit
+Function        Get-VMXSnapshot                                    VMXToolkit
+Function        Get-VMXSnapshotconfig                              VMXToolkit
+Function        Get-VMXTemplate                                    VMXToolkit
+Function        Get-VMXToolsState                                  VMXToolkit
+Function        Get-VMXUUID                                        VMXToolkit
+Function        Get-yesnoabort                                     VMXToolkit
+Function        Invoke-VMXBash                                     VMXToolkit
+Function        Invoke-VMXexpect                                   VMXToolkit
+Function        Invoke-VMXPowerShell                               VMXToolkit
+Function        New-VMXClone                                       VMXToolkit
+Function        New-VMXGuestPath                                   VMXToolkit
+Function        New-VMXLinkedClone                                 VMXToolkit
+Function        New-VMXScsiDisk                                    VMXToolkit
+Function        New-VMXSnapshot                                    VMXToolkit
+Function        Optimize-VMXDisk                                   VMXToolkit
+Function        remove-vmx                                         VMXToolkit
+Function        Remove-VMXserial                                   VMXToolkit
+Function        Remove-VMXSnapshot                                 VMXToolkit
+Function        Repair-VMXDisk                                     VMXToolkit
+Function        Resize-VMXDiskfile                                 VMXToolkit
+Function        Restore-VMXSnapshot                                VMXToolkit
+Function        Search-VMXPattern                                  VMXToolkit
+Function        Set-VMXActivationPreference                        VMXToolkit
+Function        Set-VMXAnnotation                                  VMXToolkit
+Function        Set-VMXDisconnectIDE                               VMXToolkit
+Function        Set-VMXDisplayName                                 VMXToolkit
+Function        Set-VMXLinuxDNS                                    VMXToolkit
+Function        Set-VMXLinuxNetwork                                VMXToolkit
+Function        Set-VMXMainMemory                                  VMXToolkit
+Function        Set-VMXmemory                                      VMXToolkit
+Function        Set-VMXNetworkAdapter                              VMXToolkit
+Function        Set-VMXprocessor                                   VMXToolkit
+Function        Set-VMXscenario                                    VMXToolkit
+Function        Set-VMXserialPipe                                  VMXToolkit
+Function        Set-VMXSharedFolder                                VMXToolkit
+Function        Set-VMXSharedFolderState                           VMXToolkit
+Function        Set-VMXSize                                        VMXToolkit
+Function        Set-VMXTemplate                                    VMXToolkit
+Function        Set-VMXToolsReminder                               VMXToolkit
+Function        Set-VMXVnet                                        VMXToolkit
+Function        Start-VMX                                          VMXToolkit
+Function        Stop-VMX                                           VMXToolkit
+Function        Suspend-VMX                                        VMXToolkit
 ``` 
 Help
 ==========

@@ -7,7 +7,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>MyApplication</RootNamespace>
     <AssemblyName>MyApplication</AssemblyName>
-    <Name>vmxtoolkit</Name>
+    <Name>VMXToolkit</Name>
     <ManifestPath>$(ProjectName).psd1</ManifestPath>
     <Guid>ac255503-3fb2-4ef4-8c8c-ff9fbe064a8d</Guid>
     <ProcessorArchitecture />
@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="vmxtoolkit.tests.ps1" />
+    <Compile Include="VMXToolkit.tests.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="Build" />

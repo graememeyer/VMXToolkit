@@ -6,7 +6,7 @@
 	.EXAMPLE
 		PS C:\> Get-VMwareversion
 	.NOTES
-		requires VMXtoolkit loaded
+		requires VMXToolkit loaded
 #>
 
 
@@ -34,13 +34,13 @@ return ($result)
 
 function Get-VMwareVersion
 {
-	[CmdletBinding(HelpUri = "http://labbuildr.bottnet.de/modules/get-vmwareversion/")]
+	[CmdletBinding(HelpUri = "http://labbuildr.bottnet.de/modules/get-VMwareversion/")]
 	param ()
 begin {}
 process {
     }
 end {
-    Write-Output $vmwareversion
+    Write-Output $VMwareversion
     }
 } 
 
@@ -77,11 +77,11 @@ return ($result)
 		PS C:\> Get-VMwareversion
 	
 	.NOTES
-		requires VMXtoolkit loaded
+		requires VMXToolkit loaded
 #>
 function Get-VMXProcessesInGuest
 {
-	[CmdletBinding(HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param (
 	[Parameter(ParameterSetName = "1", Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')]$VMXName,
 	[Parameter(ParameterSetName = "1", Mandatory = $true, ValueFromPipelineByPropertyName = $True)]$config,
@@ -101,7 +101,7 @@ process {
 		return
 	}
     $Processlist.RemoveRange(0,2)
-		if ($global:vmwareversion -lt 10.5)
+		if ($global:VMwareversion -lt 10.5)
 			{
 			foreach ($Process in $Processlist)
 				{
@@ -177,7 +177,7 @@ function Get-VMXHWVersion
 
 function Set-VMXDisconnectIDE
 {
-	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param (
 	[Parameter(ParameterSetName = "2", Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')]$VMXName,
 	[Parameter(ParameterSetName = "2", Mandatory = $True, ValueFromPipelineByPropertyName = $True)]$config
@@ -214,7 +214,7 @@ function Set-VMXDisconnectIDE
 
 function Set-VMXIDECDrom
 {
-	[CmdletBinding(DefaultParametersetName = "file",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParametersetName = "file",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param (
 	[Parameter(ParameterSetName = "file", Mandatory = $false, ValueFromPipelineByPropertyName = $True)]
 	[Alias('NAME','CloneName')]$VMXName,
@@ -268,7 +268,7 @@ function Set-VMXIDECDrom
 
 function Set-VMXAnnotation
 {
-	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param (
 	[Parameter(ParameterSetName = "2", Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')]$VMXName,
 	[Parameter(ParameterSetName = "2", Mandatory = $True, ValueFromPipelineByPropertyName = $True)]$config,
@@ -333,7 +333,7 @@ function Set-VMXAnnotation
 
 function Get-VMXToolsState
 {
-	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param (
 	[Parameter(ParameterSetName = "2", Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')]$VMXName,
 	[Parameter(ParameterSetName = "2", Mandatory = $True, ValueFromPipelineByPropertyName = $True)]$config
@@ -346,7 +346,7 @@ function Get-VMXToolsState
 	process
 	{
 		
-        if ($vmwareversion.major -gt 9)
+        if ($VMwareversion.major -gt 9)
         {
 
         switch ($PsCmdlet.ParameterSetName)
@@ -420,7 +420,7 @@ function Get-VMXConfigVersion
 		get-vmx test | get-vmxscsidisk | Resize-VMXDiskfile
 	
 	.NOTES
-		requires VMXtoolkit loaded
+		requires VMXToolkit loaded
 #>
 function Expand-VMXDiskfile
 {
@@ -449,7 +449,7 @@ function Expand-VMXDiskfile
 
 		}
         Write-Host " ==>Expanding $Diskfile"
-	    & $Global:vmware_vdiskmanager -x "$($NewSize/1MB)MB" $Diskfile
+	    & $Global:VMware_vdiskmanager -x "$($NewSize/1MB)MB" $Diskfile
         Write-Verbose "Exitcode: $LASTEXITCODE"
 	}
 	end { }
@@ -469,7 +469,7 @@ function Expand-VMXDiskfile
 		get-vmx test | get-vmxscsidisk | Resize-VMXDiskfile
 	
 	.NOTES
-		requires VMXtoolkit loaded
+		requires VMXToolkit loaded
 #>
 function Resize-VMXDiskfile
 {
@@ -497,7 +497,7 @@ function Resize-VMXDiskfile
 
 		}
         Write-Warning "Shrinking $Diskfile"
-	    & $Global:vmware_vdiskmanager -k $Diskfile
+	    & $Global:VMware_vdiskmanager -k $Diskfile
         Write-Verbose "Exitcode: $LASTEXITCODE"
 		
 	}
@@ -515,7 +515,7 @@ function Resize-VMXDiskfile
 		get-vmx test | get-vmxscsidisk | Optimize-VMXDisk
 	
 	.NOTES
-		requires VMXtoolkit loaded
+		requires VMXToolkit loaded
 #>
 function Optimize-VMXDisk
 {
@@ -543,7 +543,7 @@ function Optimize-VMXDisk
 
 		}
         Write-Warning "Defragmenting $Diskfile"
-	    & $Global:vmware_vdiskmanager -d $Diskfile
+	    & $Global:VMware_vdiskmanager -d $Diskfile
         Write-Verbose "Exitcode: $LASTEXITCODE"
 		
 	}
@@ -576,7 +576,7 @@ function Repair-VMXDisk
 
 		}
         Write-Warning "Repairing $Diskfile"
-	    & $Global:vmware_vdiskmanager -R $Diskfile | Out-Null
+	    & $Global:VMware_vdiskmanager -R $Diskfile | Out-Null
         Write-Verbose "Exitcode: $LASTEXITCODE"
 		
 	}
@@ -672,7 +672,7 @@ function Import-VMXOVATemplate
 		PS C:\> Get-VMXinfo
     .EXAMPLE
 	.NOTES
-		requires VMXtoolkit loaded
+		requires VMXToolkit loaded
 #>
 function Get-VMXInfo {
 	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "http://labbuildr.bottnet.de/modules/Get-VMXInfo/")]
@@ -707,7 +707,7 @@ function Get-VMXInfo {
 		$Processes = get-process -id (Get-WmiObject -Class win32_process | Where-Object commandline -match $config.replace('\','\\')).handle
 			foreach ($Process in $Processes)
 			{
-				if ($Process.ProcessName -ne "vmware")
+				if ($Process.ProcessName -ne "VMware")
 				{
 					write-verbose "processing objects for $vmxname"
 					$vmxconfig = Get-VMXConfig -config $config
@@ -740,7 +740,7 @@ function Get-VMXInfo {
 					$Object | Add-Member -MemberType NoteProperty -Name ScsiDisk -Value (Get-VMXScsiDisk -vmxconfig $vmxconfig | Select-Object SCSIAddress, Disk)
 					Write-Output $Object
 					
-				} #end if $Process.ProcessName -ne "vmware"
+				} #end if $Process.ProcessName -ne "VMware"
 			} #  end foreach process
 		}# end if $VMXconfig
 	} # endprocess
@@ -1589,7 +1589,7 @@ function Get-VMXGuestOS{
 #>
 function Get-VMXVTBit
 {
-	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "http://github.com/bottkars/vmxtoolkit/wiki/Get-VMXVTBit")]
+	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "http://github.com/bottkars/VMXToolkit/wiki/Get-VMXVTBit")]
 	param (
 		[Parameter(ParameterSetName = "2", Mandatory = $false, ValueFromPipelineByPropertyName = $True)]
 		[Parameter(ParameterSetName = "1", Mandatory = $true, Position = 1, ValueFromPipelineByPropertyName = $True)]
@@ -1967,7 +1967,7 @@ function Set-VMXGuestOS {
 		'nld9','oes','sjds',
 		'opensuse','opensuse-64',
 		'fedora','fedora-64',
-		'coreos-64','vmware-photon-64',
+		'coreos-64','VMware-photon-64',
 		'other24xlinux-64','other26xlinux','other26xlinux-64','other3xlinux','other3xlinux-64','otherlinux','otherlinux-64',
 		'genericlinux',
 		'netware4','netware5',
@@ -2137,7 +2137,7 @@ function Set-VMXGuestOS {
             'fedora',
             'fedora-64',
             'coreos-64',
-            'vmware-photon-64',
+            'VMware-photon-64',
             'other24xlinux-64',
             'other26xlinux',
             'other26xlinux-64',
@@ -2392,7 +2392,7 @@ function Set-VMXUUID
 #>
 function Set-VMXSharedFolderState
 {
-	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
 		[Parameter(Mandatory = $false, ParameterSetName = 1, ValueFromPipelineByPropertyName = $True)]
@@ -2486,7 +2486,7 @@ addSharedFolder          Path to vmx file     Add a Host-Guest shared folder
 #>
 function Set-VMXSharedFolder
 {
-	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
 		[Parameter(Mandatory = $false, ParameterSetName = 1, ValueFromPipelineByPropertyName = $True)]
@@ -2563,7 +2563,7 @@ function Set-VMXSharedFolder
 
 function Get-VMXUUID
 {
-	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param (
 		[Parameter(ParameterSetName = "1", Mandatory = $true, Position = 1, ValueFromPipelineByPropertyName = $True)]
 		[Parameter(ParameterSetName = "2", Mandatory = $false, Position = 1, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')]$VMXName,
@@ -2829,7 +2829,7 @@ end {}
 #>
 function New-VMXSnapshot
 {
-	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
 		#[Parameter(Mandatory = $true, ParameterSetName = 1, ValueFromPipelineByPropertyName = $True)]
@@ -2907,7 +2907,7 @@ function New-VMXSnapshot
 #>
 function Restore-VMXSnapshot
 {
-	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
 		#[Parameter(Mandatory = $true, ParameterSetName = 1, ValueFromPipelineByPropertyName = $True)]
@@ -2989,7 +2989,7 @@ function Restore-VMXSnapshot
 #>
 function New-VMXLinkedClone
 {
-	[CmdletBinding(DefaultParameterSetName = '1',HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParameterSetName = '1',HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	[OutputType([psobject])]
 	param
 	(
@@ -3057,7 +3057,7 @@ function New-VMXLinkedClone
 
 function New-VMXClone
 {
-	[CmdletBinding(DefaultParameterSetName = '1',HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParameterSetName = '1',HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	[OutputType([psobject])]
 	param
 	(
@@ -3220,7 +3220,7 @@ function Get-VMXSnapshot
 #>
 function Remove-VMXSnapshot
 {
-	[CmdletBinding(HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
 		[Parameter(Mandatory = $false, ParameterSetName = 2, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')][string]$VMXName,
@@ -3287,7 +3287,7 @@ function Remove-VMXSnapshot
 #>
 function Start-VMX
 {
-	[CmdletBinding(HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param (
 		[Parameter(ParameterSetName = "1", Position = 1, Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		#[Parameter(ParameterSetName = "2",Position = 2,Mandatory = $true, ValueFromPipelineByPropertyName = $True)]
@@ -3342,7 +3342,7 @@ function Start-VMX
 		if (($vmx) -and ($vmx.state -ne "running"))
 		{
             [int]$vmxhwversion = (Get-VMXHWVersion -config $vmx.config).hwversion
-            if ($vmxHWversion -le $vmwareversion.major)
+            if ($vmxHWversion -le $VMwareversion.major)
             {
                 Write-Verbose "Checking State for $vmxname : $($vmx.vmxname)  : $($vmx.state)"
                 Write-Verbose "creating Backup of $($vmx.config)"
@@ -3354,8 +3354,8 @@ function Start-VMX
 	    		$content += 'guestinfo.hypervisor = "' + $env:COMPUTERNAME + '"'
 	    		$content = $content | Where-Object { $_ -NotMatch "guestinfo.powerontime" }
 	    		$content += 'guestinfo.powerontime = "' + $VMXStarttime + '"'
-                $content = $content |Where-Object { $_ -NotMatch "guestinfo.vmwareversion" }
-                $content += 'guestinfo.vmwareversion = "' + $Global:vmwareversion + '"'
+                $content = $content |Where-Object { $_ -NotMatch "guestinfo.VMwareversion" }
+                $content += 'guestinfo.VMwareversion = "' + $Global:VMwareversion + '"'
 	    		Set-Content -Path $vmx.config -Value $content -Force
 		    	Write-Verbose "starting VM $vmxname"
 				Write-Host -ForegroundColor Gray " ==>starting Virtual Machine " -NoNewline
@@ -3400,7 +3400,7 @@ function Start-VMX
                     Write-Warning "There was an error starting the VM: $cmdresult"
                     }
 		    }
-            else { Write-Error "Vmware version does not match, need version $vmxhwversion "	}
+            else { Write-Error "VMware version does not match, need version $vmxhwversion "	}
 		}
 		elseif ($vmx.state -eq "running") { Write-Verbose "VM $VMXname already running" } # end elseif
 		
@@ -3430,7 +3430,7 @@ function Start-VMX
 		Additional information about the function.
 #>
 function Stop-VMX{
-	[CmdletBinding(DefaultParameterSetName = '2',HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParameterSetName = '2',HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param (
 		[Parameter(ParameterSetName = "1", Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $True)]
         [Parameter(ParameterSetName = "2", Mandatory = $false, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $True)]
@@ -3514,7 +3514,7 @@ function Stop-VMX{
 #>
 function Suspend-VMX
 {
-	[CmdletBinding(DefaultParameterSetName = '2',HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParameterSetName = '2',HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
 
@@ -3597,7 +3597,7 @@ function Suspend-VMX
 #>
 function Set-VMXTemplate
 {
-	[CmdletBinding(HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param (
 		[Parameter( Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('vmxconfig')]$config,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')][string]$VMXName,
@@ -3687,7 +3687,7 @@ function Set-VMXTemplate
 #>
 function Get-VMXTemplate
 {
-	[CmdletBinding(DefaultParameterSetName = '1',HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParameterSetName = '1',HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	[OutputType([psobject])]
 	param
 	(
@@ -3740,7 +3740,7 @@ function Get-VMXTemplate
 #>
 function Set-VMXNetworkAdapter
 {
-	[CmdletBinding(HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')][string]$VMXName,
@@ -3823,7 +3823,7 @@ function Set-VMXNetworkAdapter
 #>
 function Connect-VMXNetworkAdapter
 {
-	[CmdletBinding(HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')][string]$VMXName,
@@ -3870,7 +3870,7 @@ function Connect-VMXNetworkAdapter
 
 function Connect-VMXcdromImage
 {
-	[CmdletBinding(HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')][string]$VMXName,
@@ -3962,7 +3962,7 @@ function Connect-VMXcdromImage
 #>
 function Disconnect-VMXNetworkAdapter
 {
-	[CmdletBinding(HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')][string]$VMXName,
@@ -4258,7 +4258,7 @@ function Remove-vmx {
 	            until ($VMrunErrorCondition -notcontains $cmdresult -or !$cmdresult)
                 if ($cmdresult -match "Error: This VM is in use.")
                     {
-                    write-warning "$cmdresult Please close VMX $VMXName in Vmware UI and try again"
+                    write-warning "$cmdresult Please close VMX $VMXName in VMware UI and try again"
                     }
         
                 if ($LASTEXITCODE -ne 0)
@@ -4323,7 +4323,7 @@ process {
         write-host -ForegroundColor Cyan "Debug message start"
         Write-Host -ForegroundColor White "Command Returned: $returncommand"
         Write-Host -ForegroundColor White "Exitcode: $LASTEXITCODE"
-        Write-Host -ForegroundColor White "Running $Global:vmwareversion"
+        Write-Host -ForegroundColor White "Running $Global:VMwareversion"
         Write-Host -ForegroundColor White "Machines Dir $Global:vmxdir"
         Write-Host -ForegroundColor Cyan "Debug Message end"
         pause
@@ -5096,7 +5096,7 @@ end {}
 #>
 function Get-VMXSnapshotconfig
 {
-	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param
 	(
 		[Parameter(Mandatory = $false, ParameterSetName = 2, ValueFromPipelineByPropertyName = $True)][Alias('TemplateName')][string]$VMXName,
@@ -5776,7 +5776,7 @@ function New-VMXGuestPath
         $vmx | Set-VMXLinuxNetwork -ipaddress 192.168.2.110 -network 192.168.2.0 -netmask 255.255.255.0 -gateway 192.168.2.10 -device eth0 -Peerdns -DNS1 192.168.2.10 -DNSDOMAIN labbuildr.local -Hostname centos3 -rootuser root -rootpassword Password123!
         #>
 function Set-VMXLinuxNetwork {
-[CmdletBinding(DefaultParametersetName = "1",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+[CmdletBinding(DefaultParametersetName = "1",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 
 param (
 	    [Parameter(ParameterSetName = "1", Mandatory = $true, ValueFromPipelineByPropertyName = $True)]
@@ -5949,7 +5949,7 @@ end {}
         $vmx | Set-VMXLinuxDNS -rootuser root -rootpassword Password123! -Verbose -device eth0
 #>
 function Set-VMXLinuxDNS {
-[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+[CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 param (
 	    [Parameter(ParameterSetName = "2", Mandatory = $true, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')]$VMXName,
 	    [Parameter(ParameterSetName = "2", Mandatory = $true, ValueFromPipelineByPropertyName = $True)]$config,
@@ -6079,7 +6079,7 @@ function Get-VMXAnnotation {
 
 function New-VMX
 {
-    [CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki/Commands/New-VMX")]
+    [CmdletBinding(DefaultParametersetName = "2",HelpUri = "https://github.com/bottkars/VMXToolkit/wiki/Commands/New-VMX")]
 	param (
 	[Parameter(ParameterSetName = "1", Mandatory = $true, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')]$VMXName,
 	[Parameter(ParameterSetName = "1",Mandatory = $true, ValueFromPipelineByPropertyName = $True,
@@ -6239,7 +6239,7 @@ function New-VMX
 	'fedora',
 	'fedora-64',
 	'coreos-64',
-	'vmware-photon-64',
+	'VMware-photon-64',
 	'other24xlinux-64',
 	'other26xlinux',
 	'other26xlinux-64',
@@ -6382,7 +6382,7 @@ tools.remindInstall = "FALSE"')
 
 function Test-VMXFileInGuest
 {
-	[CmdletBinding(HelpUri = "https://github.com/bottkars/vmxtoolkit/wiki")]
+	[CmdletBinding(HelpUri = "https://github.com/bottkars/VMXToolkit/wiki")]
 	param (
 	[Parameter(ParameterSetName = "1", Mandatory = $false, ValueFromPipelineByPropertyName = $True)]$Filename,
 	[Parameter(ParameterSetName = "1", Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME','CloneName')]$VMXName,

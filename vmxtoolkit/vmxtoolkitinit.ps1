@@ -12,10 +12,10 @@ write-Host "trying to get os type ... "
 if ($env:windir) {
     $OS_Version = Get-Command "$env:windir\system32\ntdll.dll"
     $OS_Version = "Product Name: Windows $($OS_Version.Version)"
-    $Global:vmxtoolkit_type = "win_x86_64"
+    $Global:VMXToolkit_type = "win_x86_64"
     write-verbose "getting VMware Path from Registry"
     if (!(Test-Path "HKCR:\")) { $NewPSDrive = New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT }
-    if (!($VMware_Path = Get-ItemProperty HKCR:\Applications\vmware.exe\shell\open\command -ErrorAction SilentlyContinue)) {
+    if (!($VMware_Path = Get-ItemProperty HKCR:\Applications\VMware.exe\shell\open\command -ErrorAction SilentlyContinue)) {
         Write-Error "VMware Binaries not found from registry"
         Break
     }
@@ -24,29 +24,29 @@ if ($env:windir) {
     $VMX_BasePath = '\Documents\Virtual Machines\'	
     $VMware_Path = Split-Path $VMware_Path.'(default)' -Parent
     $VMware_Path = $VMware_Path -replace '"', ''
-    $Global:vmwarepath = $VMware_Path
-    $Global:vmware = "$VMware_Path\vmware.exe"
+    $Global:VMwarepath = $VMware_Path
+    $Global:VMware = "$VMware_Path\VMware.exe"
     $Global:vmrun = "$VMware_Path\vmrun.exe"
-    $Global:vmware_vdiskmanager = Join-Path $VMware_Path 'vmware-vdiskmanager.exe'
-    $Global:VMware_OVFTool = Join-Path $Global:vmwarepath 'OVFTool\ovftool.exe'
-    $GLobal:VMware_packer = Join-Path $Global:vmwarepath '7za.exe'
-    $VMwarefileinfo = Get-ChildItem $Global:vmware
-    $Global:vmxinventory = "$env:appdata\vmware\inventory.vmls"
-    $Global:vmwareversion = New-Object System.Version($VMwarefileinfo.VersionInfo.ProductMajorPart, $VMwarefileinfo.VersionInfo.ProductMinorPart, $VMwarefileinfo.VersionInfo.ProductBuildPart, $VMwarefileinfo.VersionInfo.ProductVersion.Split("-")[1])
+    $Global:VMware_vdiskmanager = Join-Path $VMware_Path 'VMware-vdiskmanager.exe'
+    $Global:VMware_OVFTool = Join-Path $Global:VMwarepath 'OVFTool\ovftool.exe'
+    $GLobal:VMware_packer = Join-Path $Global:VMwarepath '7za.exe'
+    $VMwarefileinfo = Get-ChildItem $Global:VMware
+    $Global:vmxinventory = "$env:appdata\VMware\inventory.vmls"
+    $Global:VMwareversion = New-Object System.Version($VMwarefileinfo.VersionInfo.ProductMajorPart, $VMwarefileinfo.VersionInfo.ProductMinorPart, $VMwarefileinfo.VersionInfo.ProductBuildPart, $VMwarefileinfo.VersionInfo.ProductVersion.Split("-")[1])
     $webrequestor = ".Net"
-    $Global:mkisofs = "$Global:vmwarepath/mkisofs.exe"
+    $Global:mkisofs = "$Global:VMwarepath/mkisofs.exe"
 }
 elseif ($OS = uname) {
     Write-Host "found OS $OS"
     Switch ($OS) {
         "Darwin" {
-            $Global:vmxtoolkit_type = "OSX"
+            $Global:VMXToolkit_type = "OSX"
             $OS_Version = (sw_vers)
             $OS_Version = $OS_Version -join " "
             $VMX_BasePath = 'Documents/Virtual Machines.localized'
             # $VMware_Path = "/Applications/VMware Fusion.app"
             $VMware_Path = mdfind -onlyin /Applications "VMware Fusion"                
-            $Global:vmwarepath = $VMware_Path
+            $Global:VMwarepath = $VMware_Path
             [version]$Fusion_Version = defaults read $VMware_Path/Contents/Info.plist CFBundleShortVersionString
             $VMware_BIN_Path = Join-Path $VMware_Path  '/Contents/Library'
             $preferences_file = "$HOME/Library/Preferences/VMware Fusion/preferences"
@@ -65,27 +65,27 @@ elseif ($OS = uname) {
                 Break
             }
 
-            $Global:VMware_vdiskmanager = Join-Path $VMware_BIN_Path 'vmware-vdiskmanager'
+            $Global:VMware_vdiskmanager = Join-Path $VMware_BIN_Path 'VMware-vdiskmanager'
             $Global:vmrun = Join-Path $VMware_BIN_Path "vmrun"
             switch ($Fusion_Version.Major) {
                 "10" {
                     $Global:VMware_OVFTool = "/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/ovftool"
-                    [version]$Global:vmwareversion = "14.0.0.0"
+                    [version]$Global:VMwareversion = "14.0.0.0"
                 }
 					
                 default {
                     $Global:VMware_OVFTool = Join-Path $VMware_Path 'ovftool'
-                    [version]$Global:vmwareversion = "12.0.0.0"
+                    [version]$Global:VMwareversion = "12.0.0.0"
                 }
             }
 
         }
         'Linux' {
-            $Global:vmxtoolkit_type = "LINUX"
+            $Global:VMXToolkit_type = "LINUX"
             $OS_Version = (uname -o)
             #$OS_Version = $OS_Version -join " "
-            $preferences_file = "$HOME/.vmware/preferences"
-            $VMX_BasePath = '/var/lib/vmware/Shared VMs'
+            $preferences_file = "$HOME/.VMware/preferences"
+            $VMX_BasePath = '/var/lib/VMware/Shared VMs'
             try {
                 $webrequestor = (get-command curl).Path
             }
@@ -94,20 +94,20 @@ elseif ($OS = uname) {
                 exit
             }
             try {
-                $VMware_Path = Split-Path -Parent (get-command vmware).Path
+                $VMware_Path = Split-Path -Parent (get-command VMware).Path
             }
             catch {
                 Write-Warning "VMware Path not found"
                 exit
             }
 
-            $Global:vmwarepath = $VMware_Path
+            $Global:VMwarepath = $VMware_Path
             $VMware_BIN_Path = $VMware_Path  
             try {
-                $Global:VMware_vdiskmanager = (get-command vmware-vdiskmanager).Path
+                $Global:VMware_vdiskmanager = (get-command VMware-vdiskmanager).Path
             }
             catch {
-                Write-Warning "vmware-vdiskmanager not found"
+                Write-Warning "VMware-vdiskmanager not found"
                 break
             }
             try {
@@ -138,9 +138,9 @@ elseif ($OS = uname) {
                 Write-Warning "mkisofs not found"
                 break
             }
-            $Vmware_Base_Version = (vmware -v)
-            $Vmware_Base_Version = $Vmware_Base_Version -replace "VMware Workstation "
-            [version]$Global:vmwareversion = ($Vmware_Base_Version.Split(' '))[0]
+            $VMware_Base_Version = (VMware -v)
+            $VMware_Base_Version = $VMware_Base_Version -replace "VMware Workstation "
+            [version]$Global:VMwareversion = ($VMware_Base_Version.Split(' '))[0]
         }
         default {
             Write-host "Sorry, rome was not build in one day"
@@ -232,18 +232,18 @@ else	{
     write-host "error Detecting OS"
     Break
 }
-Write-Host -ForegroundColor Gray " ==>running vmxtoolkit for $Global:vmxtoolkit_type"
+Write-Host -ForegroundColor Gray " ==>running VMXToolkit for $Global:VMXToolkit_type"
 Write-Host -ForegroundColor Gray " ==>vmrun is $Global:vmrun"
-Write-Host -ForegroundColor Gray " ==>vmwarepath is $Global:vmwarepath"
+Write-Host -ForegroundColor Gray " ==>VMwarepath is $Global:VMwarepath"
 if ($VMX_Path) {
     Write-Host -ForegroundColor Gray " ==>using virtual machine directory from module load $Global:vmxdir"
 }
 else {
     Write-Host -ForegroundColor Gray " ==>using virtual machine directory from $defaultselection`: $Global:vmxdir"
 }	
-Write-Host -ForegroundColor Gray " ==>running VMware Version Mode $Global:vmwareversion"
+Write-Host -ForegroundColor Gray " ==>running VMware Version Mode $Global:VMwareversion"
 Write-Host -ForegroundColor Gray " ==>OVFtool is $Global:VMware_OVFTool"
 Write-Host -ForegroundColor Gray " ==>Packertool is $GLobal:VMware_packer"
-Write-Host -ForegroundColor Gray " ==>vdisk manager is $Global:vmware_vdiskmanager"
+Write-Host -ForegroundColor Gray " ==>vdisk manager is $Global:VMware_vdiskmanager"
 Write-Host -ForegroundColor Gray " ==>webrequest tool is $webrequestor"
 Write-Host -ForegroundColor Gray " ==>isotool is $Global:mkisofs"

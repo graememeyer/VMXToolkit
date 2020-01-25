@@ -1,5 +1,5 @@
 ﻿#
-# Modulmanifest für das Modul "vmxtoolkit"
+# Modulmanifest für das Modul "VMXToolkit"
 #
 # Generiert von: Karsten Bott
 #
@@ -7,8 +7,8 @@
 #
 @{
 # Die diesem Manifest zugeordnete Skript- oder Binärmoduldatei.
-RootModule = 'vmxtoolkit.psm1'
-# ModuletoProcess = 'vmxtoolkit.psm1'
+RootModule = 'VMXToolkit.psm1'
+# ModuletoProcess = 'VMXToolkit.psm1'
 # Die Versionsnummer dieses Moduls
 ModuleVersion = '4.5.3.1'
 # ID zur eindeutigen Kennzeichnung dieses Moduls
@@ -31,7 +31,7 @@ Copyright = '(c) 2014 Karsten Bott. Alle Rechte vorbehalten.
 '
 
 # Beschreibung der von diesem Modul bereitgestellten Funktionen
-Description = 'Powershell Modules for VMware Workstation on Windows/Linux and VMware Fusion on OSX, see https://github.com/bottkars/vmxtoolkit for details'
+Description = 'Powershell Modules for VMware Workstation on Windows/Linux and VMware Fusion on OSX, see https://github.com/bottkars/VMXToolkit for details'
 
 # Die für dieses Modul mindestens erforderliche Version des Windows PowerShell-Moduls
 PowerShellVersion = '3.0'
@@ -58,17 +58,17 @@ PowerShellVersion = '3.0'
 # RequiredAssemblies = @()
 
 # Die Skriptdateien (PS1-Dateien), die vor dem Importieren dieses Moduls in der Umgebung des Aufrufers ausgeführt werden.
-ScriptsToProcess = @(".\vmxtoolkitinit.ps1")
+ScriptsToProcess = @(".\VMXToolkitinit.ps1")
 
 # Die Typdateien (.ps1xml), die beim Importieren dieses Moduls geladen werden sollen
 # TypesToProcess = @()
 
 # Die Formatdateien (.ps1xml), die beim Importieren dieses Moduls geladen werden sollen
 FormatsToProcess = @(
-'.\Formats\vmxtoolkit.virtualmachine.Format.ps1xml',
-'.\Formats\vmxtoolkit.virtualmachineinfo.Format.ps1xml',
-'.\Formats\vmxtoolkit.vmxscsidisk.Format.ps1xml',
-'.\Formats\vmxtoolkit.vmxsharedFolder.Format.ps1xml'
+'.\Formats\VMXToolkit.virtualmachine.Format.ps1xml',
+'.\Formats\VMXToolkit.virtualmachineinfo.Format.ps1xml',
+'.\Formats\VMXToolkit.vmxscsidisk.Format.ps1xml',
+'.\Formats\VMXToolkit.vmxsharedFolder.Format.ps1xml'
 )
 
 # Die Module, die als geschachtelte Module des in "RootModule/ModuleToProcess" angegebenen Moduls importiert werden sollen.
@@ -90,9 +90,9 @@ AliasesToExport = '*'
 # ModuleList = @()
 
 # Liste aller Dateien in diesem Modulpaket
-FileList = @("vmxtoolkitinit.ps1",
-"vmxtoolkit.psd1",
-"vmxtoolkit.psm1")
+FileList = @("VMXToolkitinit.ps1",
+"VMXToolkit.psd1",
+"VMXToolkit.psm1")
 
 # Die privaten Daten, die an das in "RootModule/ModuleToProcess" angegebene Modul übergeben werden sollen.
 # PrivateData = ''

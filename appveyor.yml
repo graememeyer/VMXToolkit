@@ -3,9 +3,9 @@ nuget:
   account_feed: true
   project_feed: true
 build:
-  project: vmxtoolkit.sln
+  project: VMXToolkit.sln
   parallel: true
   verbosity: minimal
 only_commits:
   files:
-  - vmxtoolkit/
+  - VMXToolkit/
