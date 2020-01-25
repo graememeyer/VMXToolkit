@@ -1,10 +1,14 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/qj88qo6772ujim54/branch/develop?svg=true)](https://ci.appveyor.com/project/bottkars/vmxtoolkit/branch/develop)
 
-
 ## VMXToolkit
 ==========
 
-VMXToolkit is a fork of [Karsten Bott's vmxtoolkit](https://github.com/bottkars/vmxtoolkit). The purpose is to split modules out into separate files, and document them in English as I go. I will attempt to align the project with common PowerShell code-style conventions as well. 
+VMXToolkit is a fork of [Karsten Bott's vmxtoolkit](https://github.com/bottkars/vmxtoolkit). The purpose is to split modules out into separate files, and document them in English. I will attempt to align the project with common PowerShell code-style conventions as well. 
+
+
+## vmxtoolkit
+==========
+
 vmxtoolkit is a PowerShell extension for VMware Workstation and Fusion
 vmxtoolkit is community-driven
 vmxtoolkit is the Base for labbuildr, the automated lab building environment for vmware workstation on windows
