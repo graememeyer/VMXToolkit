@@ -17,7 +17,6 @@
 	.NOTES
 		Additional information about the function.
 #>
-
 function Get-VMX {
     [CmdletBinding(HelpUri = "http://labbuildr.bottnet.de/modules/Get-VMX/")]
     param (
