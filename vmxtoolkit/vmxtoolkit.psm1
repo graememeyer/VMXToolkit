@@ -1173,7 +1173,7 @@ function Search-VMXPattern {
 #>
 function Get-VMXConfig {
     [CmdletBinding(DefaultParametersetName = "2", HelpUri = "http://labbuildr.bottnet.de/modules/Get-VMXConfig/")]
-    para\1(\2
+    param (
 
         [Parameter(ParameterSetName = "1", Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "2", Mandatory = $false, ValueFromPipelineByPropertyName = $True)][Alias('NAME', 'CloneName')]$VMXName,
