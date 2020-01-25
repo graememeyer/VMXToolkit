@@ -12,7 +12,7 @@ Installation
  
 Simply extract the toolkit into a folder where your VMÂ´s reside.
 Per Default, VMXToolkit searches from that path
-Otherwise, specifythe path to your vm when doing a get-vmx
+Otherwise, specifythe path to your vm when doing a Get-VMX
 
 current exposed commands
 ===========  
